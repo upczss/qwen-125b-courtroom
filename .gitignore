@@ -1,0 +1,39 @@
+# Local IDE and Python environments
+.idea/
+.vscode/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+config.ini
+*.pem
+*.key
+
+# Model weights, user data and runtime artifacts
+qwen-local/models/
+qwen-local/data/
+qwen-local/logs/
+uploads/
+*.db
+*.db-*
+*.sqlite*
+*.sql
+*.dump
+*.log
+*.pid
+*.safetensors
+*.gguf
+*.vhdx
+
+# Only reviewed screenshots in docs/images are published
+/images/
+qwen-local/deploy/local/*.png
+qwen-local/deploy/local/*results.json
+qwen-local/deploy/local/*stress.json
+

@@ -1,0 +1,36 @@
+name: qwen-local-inference
+services:
+  inference:
+    image: vllm/vllm-openai@sha256:a4a4c0437bf7240089da5f08aa370c4aee17ae5290f7a3b468825ee26c4c3a6b
+    gpus: all
+    shm_size: '2gb'
+    ports:
+      - '127.0.0.1:8001:8000'
+    environment:
+      HF_HUB_OFFLINE: '1'
+      VLLM_NO_USAGE_STATS: '1'
+    volumes:
+      - ../../models/Qwen3-8B:/models/Qwen3-8B:ro
+      - inference_cache:/root/.cache/vllm
+    command:
+      - --model
+      - /models/Qwen3-8B
+      - --served-model-name
+      - qwen3-8b
+      - --dtype
+      - half
+      - --max-model-len
+      - '4096'
+      - --max-num-seqs
+      - '5'
+      - --gpu-memory-utilization
+      - '0.80'
+      - --enforce-eager
+    healthcheck:
+      test: ['CMD', 'python3', '-c', "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=5)"]
+      interval: 15s
+      timeout: 10s
+      retries: 40
+      start_period: 120s
+volumes:
+  inference_cache:
